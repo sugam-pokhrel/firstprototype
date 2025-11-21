@@ -1,0 +1,211 @@
+{
+  "project": {
+    "name": "WashGo",
+    "description": "React Native mobile app for renting laundry machines from people nearby",
+    "framework": "React Native with Expo",
+    "language": "JavaScript (JSX)"
+  },
+  "setup": {
+    "commands": [
+      {
+        "step": 1,
+        "description": "Initialize Expo project",
+        "command": "npx create-expo-app WashGo && cd WashGo"
+      },
+      {
+        "step": 2,
+        "description": "Install navigation dependencies",
+        "command": "npm install @react-navigation/native @react-navigation/stack @react-navigation/bottom-tabs"
+      },
+      {
+        "step": 3,
+        "description": "Install Expo navigation dependencies",
+        "command": "npx expo install react-native-screens react-native-safe-area-context"
+      },
+      {
+        "step": 4,
+        "description": "Install maps",
+        "command": "npx expo install react-native-maps"
+      },
+      {
+        "step": 5,
+        "description": "Install location services",
+        "command": "npx expo install expo-location"
+      },
+      {
+        "step": 6,
+        "description": "Install vector icons",
+        "command": "npx expo install @expo/vector-icons"
+      },
+      {
+        "step": 7,
+        "description": "Install state management and utilities",
+        "command": "npm install zustand axios date-fns"
+      }
+    ]
+  },
+  "folderStructure": {
+    "src": {
+      "assets": {
+        "images": {},
+        "icons": {}
+      },
+      "components": {
+        "common": [
+          "Button.jsx",
+          "Input.jsx",
+          "Card.jsx"
+        ],
+        "auth": [
+          "LoginForm.jsx",
+          "SignupForm.jsx"
+        ],
+        "map": [
+          "MapView.jsx",
+          "MachineMarker.jsx"
+        ]
+      },
+      "screens": {
+        "auth": [
+          "LoginScreen.jsx",
+          "SignupScreen.jsx"
+        ],
+        "home": [
+          "HomeScreen.jsx"
+        ],
+        "map": [
+          "MapScreen.jsx"
+        ],
+        "profile": [
+          "ProfileScreen.jsx"
+        ],
+        "booking": [
+          "BookingScreen.jsx",
+          "ConfirmationScreen.jsx"
+        ]
+      },
+      "navigation": [
+        "AppNavigator.jsx",
+        "AuthNavigator.jsx",
+        "TabNavigator.jsx"
+      ],
+      "services": [
+        "api.js",
+        "auth.js",
+        "location.js",
+        "storage.js"
+      ],
+      "store": [
+        "authStore.js",
+        "machineStore.js",
+        "bookingStore.js"
+      ],
+      "utils": [
+        "constants.js",
+        "helpers.js",
+        "validation.js"
+      ],
+      "theme": [
+        "colors.js",
+        "typography.js",
+        "spacing.js"
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": "src/theme/colors.js",
+      "content": "export const colors = {\n  primary: '#3B82F6',\n  primaryLight: '#60A5FA',\n  primaryDark: '#2563EB',\n  secondary: '#10B981',\n  background: '#FFFFFF',\n  backgroundGray: '#F9FAFB',\n  text: '#111827',\n  textGray: '#6B7280',\n  border: '#E5E7EB',\n  error: '#EF4444',\n  success: '#10B981',\n  white: '#FFFFFF',\n};"
+    },
+    {
+      "path": "src/theme/spacing.js",
+      "content": "export const spacing = {\n  xs: 4,\n  sm: 8,\n  md: 16,\n  lg: 24,\n  xl: 32,\n  xxl: 48,\n};"
+    },
+    {
+      "path": "src/theme/typography.js",
+      "content": "export const typography = {\n  h1: {\n    fontSize: 32,\n    fontWeight: 'bold',\n  },\n  h2: {\n    fontSize: 24,\n    fontWeight: 'bold',\n  },\n  h3: {\n    fontSize: 20,\n    fontWeight: '600',\n  },\n  body: {\n    fontSize: 16,\n    fontWeight: '400',\n  },\n  caption: {\n    fontSize: 14,\n    fontWeight: '400',\n  },\n};"
+    },
+    {
+      "path": "src/components/common/Button.jsx",
+      "content": "import React from 'react';\nimport { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';\nimport { colors } from '../../theme/colors';\n\nexport default function Button({ \n  title, \n  onPress, \n  variant = 'primary', \n  disabled = false,\n  loading = false,\n  style \n}) {\n  return (\n    <TouchableOpacity\n      style={[\n        styles.button,\n        variant === 'primary' && styles.primary,\n        variant === 'secondary' && styles.secondary,\n        variant === 'outline' && styles.outline,\n        disabled && styles.disabled,\n        style\n      ]}\n      onPress={onPress}\n      disabled={disabled || loading}\n      activeOpacity={0.8}\n    >\n      {loading ? (\n        <ActivityIndicator color={variant === 'outline' ? colors.primary : colors.white} />\n      ) : (\n        <Text style={[\n          styles.text,\n          variant === 'primary' && styles.primaryText,\n          variant === 'outline' && styles.outlineText,\n        ]}>\n          {title}\n        </Text>\n      )}\n    </TouchableOpacity>\n  );\n}\n\nconst styles = StyleSheet.create({\n  button: {\n    paddingVertical: 14,\n    paddingHorizontal: 24,\n    borderRadius: 12,\n    alignItems: 'center',\n    justifyContent: 'center',\n    minHeight: 50,\n  },\n  primary: {\n    backgroundColor: colors.primary,\n    shadowColor: colors.primary,\n    shadowOffset: { width: 0, height: 4 },\n    shadowOpacity: 0.3,\n    shadowRadius: 8,\n    elevation: 4,\n  },\n  secondary: {\n    backgroundColor: colors.secondary,\n  },\n  outline: {\n    backgroundColor: 'transparent',\n    borderWidth: 2,\n    borderColor: colors.primary,\n  },\n  disabled: {\n    opacity: 0.5,\n  },\n  text: {\n    fontSize: 16,\n    fontWeight: '600',\n  },\n  primaryText: {\n    color: colors.white,\n  },\n  outlineText: {\n    color: colors.primary,\n  },\n});"
+    },
+    {
+      "path": "src/components/common/Input.jsx",
+      "content": "import React, { useState } from 'react';\nimport { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';\nimport { Ionicons } from '@expo/vector-icons';\nimport { colors } from '../../theme/colors';\n\nexport default function Input({ \n  label, \n  value, \n  onChangeText, \n  placeholder,\n  secureTextEntry = false,\n  error,\n  keyboardType = 'default',\n  autoCapitalize = 'none',\n  style\n}) {\n  const [isSecure, setIsSecure] = useState(secureTextEntry);\n  const [isFocused, setIsFocused] = useState(false);\n\n  return (\n    <View style={[styles.container, style]}>\n      {label && <Text style={styles.label}>{label}</Text>}\n      <View style={[\n        styles.inputContainer,\n        isFocused && styles.inputFocused,\n        error && styles.inputError\n      ]}>\n        <TextInput\n          style={styles.input}\n          value={value}\n          onChangeText={onChangeText}\n          placeholder={placeholder}\n          secureTextEntry={isSecure}\n          keyboardType={keyboardType}\n          autoCapitalize={autoCapitalize}\n          onFocus={() => setIsFocused(true)}\n          onBlur={() => setIsFocused(false)}\n          placeholderTextColor={colors.textGray}\n        />\n        {secureTextEntry && (\n          <TouchableOpacity\n            onPress={() => setIsSecure(!isSecure)}\n            style={styles.eyeIcon}\n          >\n            <Ionicons \n              name={isSecure ? 'eye-off' : 'eye'} \n              size={20} \n              color={colors.textGray} \n            />\n          </TouchableOpacity>\n        )}\n      </View>\n      {error && <Text style={styles.errorText}>{error}</Text>}\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: {\n    marginBottom: 16,\n  },\n  label: {\n    fontSize: 14,\n    fontWeight: '500',\n    color: colors.text,\n    marginBottom: 8,\n  },\n  inputContainer: {\n    flexDirection: 'row',\n    alignItems: 'center',\n    borderWidth: 1,\n    borderColor: colors.border,\n    borderRadius: 12,\n    backgroundColor: colors.white,\n  },\n  inputFocused: {\n    borderColor: colors.primary,\n    borderWidth: 2,\n  },\n  inputError: {\n    borderColor: colors.error,\n  },\n  input: {\n    flex: 1,\n    padding: 14,\n    fontSize: 16,\n    color: colors.text,\n  },\n  eyeIcon: {\n    padding: 12,\n  },\n  errorText: {\n    color: colors.error,\n    fontSize: 12,\n    marginTop: 4,\n  },\n});"
+    },
+    {
+      "path": "src/screens/auth/LoginScreen.jsx",
+      "content": "import React, { useState } from 'react';\nimport { \n  View, \n  Text, \n  StyleSheet, \n  ScrollView, \n  KeyboardAvoidingView, \n  Platform,\n  TouchableOpacity \n} from 'react-native';\nimport { Ionicons } from '@expo/vector-icons';\nimport Button from '../../components/common/Button';\nimport Input from '../../components/common/Input';\nimport { colors } from '../../theme/colors';\n\nexport default function LoginScreen({ navigation }) {\n  const [email, setEmail] = useState('');\n  const [password, setPassword] = useState('');\n  const [loading, setLoading] = useState(false);\n  const [errors, setErrors] = useState({});\n\n  const handleLogin = async () => {\n    const newErrors = {};\n    if (!email) newErrors.email = 'Email is required';\n    if (!password) newErrors.password = 'Password is required';\n    \n    if (Object.keys(newErrors).length > 0) {\n      setErrors(newErrors);\n      return;\n    }\n\n    setLoading(true);\n    try {\n      console.log('Login with:', email, password);\n      // Add API call here\n    } catch (error) {\n      console.error('Login error:', error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <KeyboardAvoidingView \n      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}\n      style={styles.container}\n    >\n      <ScrollView \n        contentContainerStyle={styles.scrollContent}\n        keyboardShouldPersistTaps=\"handled\"\n      >\n        <View style={styles.header}>\n          <View style={styles.logoContainer}>\n            <Ionicons name=\"water\" size={40} color={colors.primary} />\n          </View>\n          <Text style={styles.title}>Welcome Back</Text>\n          <Text style={styles.subtitle}>Log in to access your account</Text>\n        </View>\n\n        <View style={styles.form}>\n          <Input\n            label=\"Email\"\n            value={email}\n            onChangeText={(text) => {\n              setEmail(text);\n              setErrors({ ...errors, email: '' });\n            }}\n            placeholder=\"johndoe@example.com\"\n            keyboardType=\"email-address\"\n            error={errors.email}\n          />\n\n          <Input\n            label=\"Password\"\n            value={password}\n            onChangeText={(text) => {\n              setPassword(text);\n              setErrors({ ...errors, password: '' });\n            }}\n            placeholder=\"Enter your password\"\n            secureTextEntry\n            error={errors.password}\n          />\n\n          <TouchableOpacity>\n            <Text style={styles.forgotPassword}>Forgot password?</Text>\n          </TouchableOpacity>\n\n          <Button\n            title=\"Log in\"\n            onPress={handleLogin}\n            loading={loading}\n            style={styles.loginButton}\n          />\n        </View>\n\n        <View style={styles.footer}>\n          <Text style={styles.footerText}>Don't have an account? </Text>\n          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>\n            <Text style={styles.signupLink}>Sign up</Text>\n          </TouchableOpacity>\n        </View>\n      </ScrollView>\n    </KeyboardAvoidingView>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    backgroundColor: colors.backgroundGray,\n  },\n  scrollContent: {\n    flexGrow: 1,\n    padding: 24,\n    justifyContent: 'center',\n  },\n  header: {\n    alignItems: 'center',\n    marginBottom: 32,\n  },\n  logoContainer: {\n    width: 80,\n    height: 80,\n    backgroundColor: colors.primaryLight + '20',\n    borderRadius: 20,\n    alignItems: 'center',\n    justifyContent: 'center',\n    marginBottom: 16,\n  },\n  title: {\n    fontSize: 28,\n    fontWeight: 'bold',\n    color: colors.text,\n    marginBottom: 8,\n  },\n  subtitle: {\n    fontSize: 16,\n    color: colors.textGray,\n  },\n  form: {\n    marginBottom: 24,\n  },\n  forgotPassword: {\n    color: colors.primary,\n    fontSize: 14,\n    textAlign: 'right',\n    marginTop: -8,\n    marginBottom: 24,\n  },\n  loginButton: {\n    marginTop: 8,\n  },\n  footer: {\n    flexDirection: 'row',\n    justifyContent: 'center',\n    alignItems: 'center',\n  },\n  footerText: {\n    color: colors.textGray,\n    fontSize: 14,\n  },\n  signupLink: {\n    color: colors.primary,\n    fontSize: 14,\n    fontWeight: '600',\n  },\n});"
+    },
+    {
+      "path": "src/screens/auth/SignupScreen.jsx",
+      "content": "import React, { useState } from 'react';\nimport { \n  View, \n  Text, \n  StyleSheet, \n  ScrollView, \n  KeyboardAvoidingView, \n  Platform,\n  TouchableOpacity \n} from 'react-native';\nimport { Ionicons } from '@expo/vector-icons';\nimport Button from '../../components/common/Button';\nimport Input from '../../components/common/Input';\nimport { colors } from '../../theme/colors';\n\nexport default function SignupScreen({ navigation }) {\n  const [formData, setFormData] = useState({\n    name: '',\n    email: '',\n    phone: '',\n    password: '',\n    confirmPassword: '',\n  });\n  const [loading, setLoading] = useState(false);\n  const [errors, setErrors] = useState({});\n  const [agreedToTerms, setAgreedToTerms] = useState(false);\n\n  const handleChange = (field, value) => {\n    setFormData({ ...formData, [field]: value });\n    setErrors({ ...errors, [field]: '' });\n  };\n\n  const handleSignup = async () => {\n    const newErrors = {};\n    if (!formData.name) newErrors.name = 'Name is required';\n    if (!formData.email) newErrors.email = 'Email is required';\n    if (!formData.phone) newErrors.phone = 'Phone is required';\n    if (!formData.password) newErrors.password = 'Password is required';\n    if (formData.password !== formData.confirmPassword) {\n      newErrors.confirmPassword = 'Passwords do not match';\n    }\n    if (!agreedToTerms) newErrors.terms = 'You must agree to the terms';\n    \n    if (Object.keys(newErrors).length > 0) {\n      setErrors(newErrors);\n      return;\n    }\n\n    setLoading(true);\n    try {\n      console.log('Signup with:', formData);\n      // Add API call here\n    } catch (error) {\n      console.error('Signup error:', error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <KeyboardAvoidingView \n      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}\n      style={styles.container}\n    >\n      <ScrollView \n        contentContainerStyle={styles.scrollContent}\n        keyboardShouldPersistTaps=\"handled\"\n        showsVerticalScrollIndicator={false}\n      >\n        <View style={styles.header}>\n          <View style={styles.logoContainer}>\n            <Ionicons name=\"water\" size={40} color={colors.primary} />\n          </View>\n          <Text style={styles.title}>Join WashGo</Text>\n          <Text style={styles.subtitle}>Rent laundry machines from people nearby</Text>\n        </View>\n\n        <View style={styles.form}>\n          <Input\n            label=\"Full Name\"\n            value={formData.name}\n            onChangeText={(text) => handleChange('name', text)}\n            placeholder=\"John Doe\"\n            error={errors.name}\n          />\n\n          <Input\n            label=\"Email\"\n            value={formData.email}\n            onChangeText={(text) => handleChange('email', text)}\n            placeholder=\"johndoe@example.com\"\n            keyboardType=\"email-address\"\n            error={errors.email}\n          />\n\n          <Input\n            label=\"Phone Number\"\n            value={formData.phone}\n            onChangeText={(text) => handleChange('phone', text)}\n            placeholder=\"+1 (555) 000-0000\"\n            keyboardType=\"phone-pad\"\n            error={errors.phone}\n          />\n\n          <Input\n            label=\"Password\"\n            value={formData.password}\n            onChangeText={(text) => handleChange('password', text)}\n            placeholder=\"Create a password\"\n            secureTextEntry\n            error={errors.password}\n          />\n\n          <Input\n            label=\"Confirm Password\"\n            value={formData.confirmPassword}\n            onChangeText={(text) => handleChange('confirmPassword', text)}\n            placeholder=\"Confirm your password\"\n            secureTextEntry\n            error={errors.confirmPassword}\n          />\n\n          <TouchableOpacity \n            style={styles.checkboxContainer}\n            onPress={() => setAgreedToTerms(!agreedToTerms)}\n          >\n            <View style={[styles.checkbox, agreedToTerms && styles.checkboxChecked]}>\n              {agreedToTerms && <Ionicons name=\"checkmark\" size={16} color={colors.white} />}\n            </View>\n            <Text style={styles.checkboxLabel}>\n              I agree to the{' '}\n              <Text style={styles.link}>Terms of Service</Text>\n              {' '}and{' '}\n              <Text style={styles.link}>Privacy Policy</Text>\n            </Text>\n          </TouchableOpacity>\n          {errors.terms && <Text style={styles.errorText}>{errors.terms}</Text>}\n\n          <Button\n            title=\"Sign up\"\n            onPress={handleSignup}\n            loading={loading}\n            style={styles.signupButton}\n          />\n        </View>\n\n        <View style={styles.footer}>\n          <Text style={styles.footerText}>Already have an account? </Text>\n          <TouchableOpacity onPress={() => navigation.navigate('Login')}>\n            <Text style={styles.loginLink}>Log in</Text>\n          </TouchableOpacity>\n        </View>\n      </ScrollView>\n    </KeyboardAvoidingView>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    backgroundColor: colors.backgroundGray,\n  },\n  scrollContent: {\n    flexGrow: 1,\n    padding: 24,\n    paddingTop: 60,\n    paddingBottom: 40,\n  },\n  header: {\n    alignItems: 'center',\n    marginBottom: 32,\n  },\n  logoContainer: {\n    width: 80,\n    height: 80,\n    backgroundColor: colors.primaryLight + '20',\n    borderRadius: 20,\n    alignItems: 'center',\n    justifyContent: 'center',\n    marginBottom: 16,\n  },\n  title: {\n    fontSize: 28,\n    fontWeight: 'bold',\n    color: colors.text,\n    marginBottom: 8,\n  },\n  subtitle: {\n    fontSize: 16,\n    color: colors.textGray,\n    textAlign: 'center',\n  },\n  form: {\n    marginBottom: 24,\n  },\n  checkboxContainer: {\n    flexDirection: 'row',\n    alignItems: 'flex-start',\n    marginTop: 8,\n    marginBottom: 24,\n  },\n  checkbox: {\n    width: 20,\n    height: 20,\n    borderWidth: 2,\n    borderColor: colors.border,\n    borderRadius: 4,\n    marginRight: 12,\n    alignItems: 'center',\n    justifyContent: 'center',\n    marginTop: 2,\n  },\n  checkboxChecked: {\n    backgroundColor: colors.primary,\n    borderColor: colors.primary,\n  },\n  checkboxLabel: {\n    flex: 1,\n    fontSize: 14,\n    color: colors.textGray,\n    lineHeight: 20,\n  },\n  link: {\n    color: colors.primary,\n    fontWeight: '600',\n  },\n  errorText: {\n    color: colors.error,\n    fontSize: 12,\n    marginTop: -16,\n    marginBottom: 16,\n  },\n  signupButton: {\n    marginTop: 8,\n  },\n  footer: {\n    flexDirection: 'row',\n    justifyContent: 'center',\n    alignItems: 'center',\n  },\n  footerText: {\n    color: colors.textGray,\n    fontSize: 14,\n  },\n  loginLink: {\n    color: colors.primary,\n    fontSize: 14,\n    fontWeight: '600',\n  },\n});"
+    },
+    {
+      "path": "src/navigation/AppNavigator.jsx",
+      "content": "import React from 'react';\nimport { NavigationContainer } from '@react-navigation/native';\nimport { createStackNavigator } from '@react-navigation/stack';\nimport LoginScreen from '../screens/auth/LoginScreen';\nimport SignupScreen from '../screens/auth/SignupScreen';\n\nconst Stack = createStackNavigator();\n\nexport default function AppNavigator() {\n  const isAuthenticated = false;\n\n  return (\n    <NavigationContainer>\n      <Stack.Navigator \n        screenOptions={{ \n          headerShown: false,\n          cardStyle: { backgroundColor: '#fff' }\n        }}\n      >\n        {!isAuthenticated ? (\n          <>\n            <Stack.Screen name=\"Login\" component={LoginScreen} />\n            <Stack.Screen name=\"Signup\" component={SignupScreen} />\n          </>\n        ) : (\n          <>\n            {/* Main app screens will go here */}\n          </>\n        )}\n      </Stack.Navigator>\n    </NavigationContainer>\n  );\n}"
+    },
+    {
+      "path": "src/services/api.js",
+      "content": "import axios from 'axios';\n\nconst API_BASE_URL = 'https://your-api.com/api';\n\nexport const api = axios.create({\n  baseURL: API_BASE_URL,\n  timeout: 10000,\n  headers: {\n    'Content-Type': 'application/json',\n  },\n});\n\napi.interceptors.request.use((config) => {\n  const token = '';\n  if (token) {\n    config.headers.Authorization = `Bearer ${token}`;\n  }\n  return config;\n});\n\nexport const authAPI = {\n  login: (email, password) => api.post('/auth/login', { email, password }),\n  signup: (userData) => api.post('/auth/signup', userData),\n  logout: () => api.post('/auth/logout'),\n};\n\nexport const machineAPI = {\n  getNearby: (latitude, longitude, radius) => \n    api.get('/machines/nearby', { params: { latitude, longitude, radius } }),\n  getById: (id) => api.get(`/machines/${id}`),\n  search: (query) => api.get('/machines/search', { params: query }),\n};\n\nexport const bookingAPI = {\n  create: (bookingData) => api.post('/bookings', bookingData),\n  getMyBookings: () => api.get('/bookings/my'),\n  cancel: (id) => api.delete(`/bookings/${id}`),\n};"
+    },
+    {
+      "path": "App.jsx",
+      "content": "import React from 'react';\nimport AppNavigator from './src/navigation/AppNavigator';\n\nexport default function App() {\n  return <AppNavigator />;\n}"
+    },
+    {
+      "path": ".env",
+      "content": "API_BASE_URL=https://your-api.com/api\nGOOGLE_MAPS_API_KEY=your_key_here"
+    }
+  ],
+  "runCommands": [
+    {
+      "step": 1,
+      "description": "Start Expo development server",
+      "command": "npx expo start"
+    },
+    {
+      "step": 2,
+      "description": "Run on iOS",
+      "command": "Press 'i' in the terminal"
+    },
+    {
+      "step": 3,
+      "description": "Run on Android",
+      "command": "Press 'a' in the terminal"
+    }
+  ],
+  "permissions": {
+    "ios": {
+      "file": "ios/WashGo/Info.plist",
+      "keys": [
+        {
+          "key": "NSLocationWhenInUseUsageDescription",
+          "value": "WashGo needs your location to find nearby laundry machines"
+        },
+        {
+          "key": "NSLocationAlwaysUsageDescription",
+          "value": "WashGo needs your location to send notifications about nearby machines"
+        }
+      ]
+    },
+    "android": {
+      "file": "android/app/src/main/AndroidManifest.xml",
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.INTERNET"
+      ]
+    }
+  },
+  "nextSteps": [
+    "Create MapScreen with react-native-maps",
+    "Build ProfileScreen for user management",
+    "Implement BookingScreen for reservations",
+    "Create TabNavigator for bottom navigation",
+    "Add state management with Zustand",
+    "Integrate payment processing (Stripe)",
+    "Add push notifications",
+    "Connect to backend API"
+  ]
+}
