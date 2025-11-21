@@ -1,29 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import MachineMarker from '../../components/map/MachineMarker';
 import machinesData from '../../data/machines.json';
 import { calculateDistance, getAddressFromCoordinates, getCurrentLocation } from '../../services/location';
 import { colors } from '../../theme/colors';
-
-// Conditionally import MapView only on native platforms
-let MapView, Marker, PROVIDER_GOOGLE;
-if (Platform.OS !== 'web') {
-  const maps = require('react-native-maps');
-  MapView = maps.default;
-  Marker = maps.Marker;
-  PROVIDER_GOOGLE = maps.PROVIDER_GOOGLE;
-}
+import MapView, { Marker, PROVIDER_GOOGLE } from './MapView';
 
 const INITIAL_REGION = {
   latitude: 37.7749,
